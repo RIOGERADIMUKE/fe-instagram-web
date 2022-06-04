@@ -25,7 +25,7 @@ export default function Login() {
             };
 
             const loginRequest = await axios.post(
-                "http://localhost:2000/auth/login",
+                "https://be-instagram-web.herokuapp.com/auth/login",
                 userToLoginPayload
             );
 
@@ -54,7 +54,7 @@ export default function Login() {
             };
 
             const loginGoogleRequest = await axios.post(
-                "http://localhost:2000/auth/login-google",
+                "https://be-instagram-web.herokuapp.com/auth/login-google",
                 userToLoginPayload
             );
 

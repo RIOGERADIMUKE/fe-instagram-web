@@ -10,7 +10,7 @@ export default function DeletePosts() {
         try {
             const token = localStorage.getItem("token");
             await axios.delete(
-                `http://localhost:2000/posts/${id}`,{
+                `https://be-instagram-web.herokuapp.com/posts/${id}`,{
                     headers: {
                         Authorization: `Bearer ${token}`,
                     },

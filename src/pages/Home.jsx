@@ -26,7 +26,7 @@ function Home() {
 
         // 2. Check token validity from API
         const currentUserRequest = await axios.get(
-          "http://localhost:2000/auth/me",
+          "https://be-instagram-web.herokuapp.com/auth/me",
           {
             headers: {
               Authorization: `Bearer ${token}`,
@@ -64,7 +64,7 @@ function Home() {
   const posts = async () => {
     try {
       const dataPosts = await axios.get(
-        `http://localhost:2000/api/posts`
+        `https://be-instagram-web.herokuapp.com/api/posts`
       )
 
       const payloadData = await dataPosts.data.data.getDataAll;
@@ -104,7 +104,7 @@ function Home() {
               <td>{data.id}</td>
               <td>{data.title}</td>
               <td>{data.description}</td>
-              <td><img className="w-25" src={`http://localhost:2000/public/files/${data.picture}`}/></td>
+              <td><img className="w-25" src={`https://be-instagram-web.herokuapp.com/public/files/${data.picture}`}/></td>
               <td><Link className="ms-5" to={`/update/${data.id}`}>
                 <Button variant="warning"> <BsFillPencilFill/> Edit</Button>
               </Link>

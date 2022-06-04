@@ -26,7 +26,7 @@ export default function CreatePosts() {
       postPayload.append("picture", pictureField);
 
       const createRequest = await axios.post(
-        "http://localhost:2000/posts", postPayload, {
+        "https://be-instagram-web.herokuapp.com/posts", postPayload, {
         headers: {
           Authorization: `Bearer ${token}`,
           "Content-Type": "multipart/form-data",

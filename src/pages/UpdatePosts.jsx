@@ -7,7 +7,7 @@ export default function Login() {
   const navigate = useNavigate();
   const titleField = useRef("");
   const descriptionField = useRef("");
-  const [picturePost, setPicturePostField] = useState();
+  const [picturePost, setPictureField] = useState();
   const { id } = useParams();
 
   const [data, setData] = useState([]);
@@ -28,7 +28,7 @@ export default function Login() {
       userToUpdatePayload.append("picture", picturePost);
 
       const updateRequest = await axios.put(
-          `http://localhost:2000/posts/${id}`, userToUpdatePayload, {
+          `https://be-instagram-web.herokuapp.com/posts/${id}`, userToUpdatePayload, {
           headers: {
               Authorization: `Bearer ${token}`,
               "Content-Type": "multipart/form-data",
@@ -54,7 +54,7 @@ export default function Login() {
   const getPosts = async () => {
     try {
 
-        const responsePosts = await axios.get(`http://localhost:2000/api/posts/${id}`)
+        const responsePosts = await axios.get(`https://be-instagram-web.herokuapp.com/api/posts/${id}`)
 
         const dataPosts = await responsePosts.data.data.getdata;
 
@@ -94,12 +94,13 @@ useEffect(() => {
         </Form.Group>
         <Form.Group className="mb-3">
           <Row>
-          <img src={`http://localhost:2000/public/files/${data.picture}`} alt="" style={{ }} />
+          <img src={`https://be-instagram-web.herokuapp.com/public/files/${data.picture}`} alt="" style={{ }} />
           </Row>
           <Form.Label>Picture</Form.Label>
           <Form.Control
             type="file"
             ref={picturePost}
+            onChange={(e) => setPictureField(e.target.files[0])}
           />
         </Form.Group>
         {errorResponse.isError && (
