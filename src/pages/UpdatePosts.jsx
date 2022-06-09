@@ -1,23 +1,24 @@
-import React, { useEffect ,useRef, useState } from "react";
-import { Form, Container, Button, Alert, Row } from "react-bootstrap";
+import { useEffect, useRef, useState } from "react";
+import { Form, Container, Button, Alert, Row, Card } from "react-bootstrap";
 import axios from "axios";
 import { Link, useNavigate, useParams } from "react-router-dom";
 
-export default function Login() {
+export default function UpdatePosts() {
   const navigate = useNavigate();
-  const titleField = useRef("");
-  const descriptionField = useRef("");
-  const [picturePost, setPictureField] = useState();
   const { id } = useParams();
 
   const [data, setData] = useState([]);
+
+  const titleField = useRef("");
+  const descriptionField = useRef("");
+  const [picturePost, setPicturePostField] = useState();
 
   const [errorResponse, setErrorResponse] = useState({
     isError: false,
     message: "",
   });
 
-  const onUpdate = async (e) => {
+  const onupdate = async (e) => {
     e.preventDefault();
 
     try {
@@ -28,20 +29,20 @@ export default function Login() {
       userToUpdatePayload.append("picture", picturePost);
 
       const updateRequest = await axios.put(
-          `https://be-instagram-web.herokuapp.com/posts/${id}`, userToUpdatePayload, {
+        `https://be-instagram-web.herokuapp.com/posts/${id}`,
+        userToUpdatePayload,
+        {
           headers: {
-              Authorization: `Bearer ${token}`,
-              "Content-Type": "multipart/form-data",
+            Authorization: `Bearer ${token}`,
+            "Content-Type": "multipart/form-data",
           },
-      }
+        }
       );
+
       const updateResponse = updateRequest.data;
 
-      if (updateResponse.status) {
-        navigate("/");
-      }
+      if (updateResponse.status) navigate("/");
     } catch (err) {
-      console.log(err);
       const response = err.response.data;
 
       setErrorResponse({
@@ -53,68 +54,60 @@ export default function Login() {
 
   const getPosts = async () => {
     try {
+      const responsePosts = await axios.get(
+        `https://be-instagram-web.herokuapp.com/posts/${id}`
+      );
 
-        const responsePosts = await axios.get(`https://be-instagram-web.herokuapp.com/api/posts/${id}`)
+      const dataPosts = await responsePosts.data.data.getdata;
 
-        const dataPosts = await responsePosts.data.data.getdata;
-
-        setData(dataPosts)
-        console.log(dataPosts);
+      setData(dataPosts);
+      console.log(dataPosts);
     } catch (err) {
-        console.log(err);
+      console.log(err);
     }
-}
+  };
 
-useEffect(() => {
+  useEffect(() => {
     getPosts();
-}, [])
+  }, []);
+
+  console.log(data);
 
   return (
-    <Container className="my-5 w-50">
-      <h1 className="mb-3 text-center">Update Post</h1>
-      <Form onSubmit={onUpdate}>
-        <Form.Group className="mb-3">
-          <Form.Label>Title</Form.Label>
-          <Form.Control 
-          type="text" 
-          ref={titleField} 
-          defaultValue={data.title}
-          placeholder="Title" />
-          
-        </Form.Group>
-        <Form.Group className="mb-3">
-          <Form.Label>Description</Form.Label>
-          <Form.Control
-            as="textarea"
-            type="text"
-            ref={descriptionField}
-            defaultValue={data.description}
-            placeholder="Description"
-          />
-        </Form.Group>
-        <Form.Group className="mb-3">
-          <Row>
-          <img src={`https://be-instagram-web.herokuapp.com/public/files/${data.picture}`} alt="" style={{ }} />
-          </Row>
-          <Form.Label>Picture</Form.Label>
-          <Form.Control
-            type="file"
-            ref={picturePost}
-            onChange={(e) => setPictureField(e.target.files[0])}
-          />
-        </Form.Group>
-        {errorResponse.isError && (
-          <Alert variant="danger">{errorResponse.message}</Alert>
-        )}
-        <div className="d-flex justify-content-center">
-          <Button type="submit">Submit</Button>
-          <Link to="/">
-            <Button type="submit" variant="outline-secondary" className="ms-3">
-              Cancel
+    <>
+      <Container className="bg-form text-center w-50">
+        <div className="row">
+          <h1 style={{ marginTop: "40px" }} className="mb-3">
+            UPDATE
+          </h1>
+          <Form onSubmit={onupdate}>
+            <Form.Group style={{ marginTop: "30px" }}>
+              <Form.Label className="text-light">title</Form.Label>
+              <Form.Control type="text" ref={titleField} />
+            </Form.Group>
+            <Form.Group className="mb-3">
+              <Form.Label className="text-light">description</Form.Label>
+              <Form.Control type="text" ref={descriptionField} />
+            </Form.Group>
+            <Form.Group>
+              <Form.Control
+                type="file"
+                onChange={(e) => setPicturePostField(e.target.files[0])}
+              />
+            </Form.Group>
+            {errorResponse.isError && (
+              <Alert variant="danger">{errorResponse.message}</Alert>
+            )}
+            <Button
+              style={{ marginTop: "30px" }}
+              className="w-100"
+              type="submit"
+            >
+              Kirim
             </Button>
-          </Link>
+          </Form>
         </div>
-      </Form>
-    </Container>
+      </Container>
+    </>
   );
 }
