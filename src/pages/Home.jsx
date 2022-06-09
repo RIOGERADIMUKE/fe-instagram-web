@@ -213,8 +213,8 @@ function Home() {
                   src={`https://be-instagram-web.herokuapp.com/files/${post.picture}`}
                   alt=""
                   style={{
-                    height: "250px",
-                    width: "100%",
+                    height: "50px",
+
                     paddingBottom: "15%",
                     maxWidth: "100%",
                   }}
